@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_spec/screens/android/android_version_detail.dart';
 
 class AndroidAllVersion extends StatefulWidget {
   const AndroidAllVersion({Key? key}) : super(key: key);
@@ -20,6 +21,11 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
           padding: EdgeInsets.symmetric(vertical: 15),
           itemBuilder: (context, index) {
             return ListTile(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AndroidVersionDetail();
+                }));
+              },
               title: Row(
                 children: [
                   Container(

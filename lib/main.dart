@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_spec/screens/android/android_dashboard.dart';
+import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -49,9 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     AndroidDashboard(),
-    Text(
-      'Index 1: Iphone',
-    ),
+    IphoneDashboard()
   ];
 
   void _onItemTapped(int index) {
