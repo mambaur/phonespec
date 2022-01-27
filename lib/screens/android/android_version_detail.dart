@@ -1,8 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_spec/models/specifications_model.dart';
+import 'package:phone_spec/utils/currency_format.dart';
 
 class AndroidVersionDetail extends StatefulWidget {
-  const AndroidVersionDetail({Key? key}) : super(key: key);
+  final SpecificationModel specificationModel;
+  const AndroidVersionDetail({Key? key, required this.specificationModel})
+      : super(key: key);
 
   @override
   _AndroidVersionDetailState createState() => _AndroidVersionDetailState();
@@ -22,7 +26,7 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Samsung G1A 33'),
+        title: Text(widget.specificationModel.title ?? '-'),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -49,7 +53,7 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                         });
                       },
                     ),
-                    items: imgList
+                    items: widget.specificationModel.images!
                         .map((item) => Container(
                               child: Container(
                                 child: Image.network(item,
@@ -96,18 +100,27 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Price',
+                    'Launch',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Range (Rp)',
-                    value: '1.000.000 - 10.000.000',
+                    title: 'Price (Rp)',
+                    value: '± ' +
+                        (widget.specificationModel.price != null
+                            ? currencyId.format(
+                                int.parse(widget.specificationModel.price!))
+                            : '-'),
                   ),
                   ItemDetailAndroid(
                     size: size,
                     title: 'Status',
-                    value: 'Available',
+                    value: widget.specificationModel.status ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Announced',
+                    value: widget.specificationModel.announced ?? '-',
                   ),
                 ],
               ),
@@ -124,17 +137,7 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                   ItemDetailAndroid(
                     size: size,
                     title: 'Technology',
-                    value: 'GSM/CDMA',
-                  ),
-                  ItemDetailAndroid(
-                    size: size,
-                    title: '4G',
-                    value: 'LTE',
-                  ),
-                  ItemDetailAndroid(
-                    size: size,
-                    title: 'Speed',
-                    value: 'HSPA 34.4545 LTE A Cat 19 1600',
+                    value: widget.specificationModel.technology ?? '-',
                   ),
                 ],
               ),
@@ -145,18 +148,28 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Launch',
+                    'Body',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Announced',
-                    value: '2022, January 04',
+                    title: 'Dimensions',
+                    value: widget.specificationModel.dimensions ?? '-',
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Status',
-                    value: 'Available',
+                    title: 'Weight',
+                    value: widget.specificationModel.weight ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Build',
+                    value: widget.specificationModel.build ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SIM',
+                    value: widget.specificationModel.sim ?? '-',
                   ),
                 ],
               ),
@@ -172,18 +185,256 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Dimensions',
-                    value: '155.7',
+                    title: 'Type',
+                    value: widget.specificationModel.typeDisplay ?? '-',
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Weight',
-                    value: '177 g (6.24 oz)',
+                    title: 'Size',
+                    value: widget.specificationModel.size ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Resolution',
+                    value: widget.specificationModel.resolution ?? '-',
                   ),
                   ItemDetailAndroid(
                     size: size,
                     title: 'Protection',
-                    value: 'Corning Gorilla',
+                    value: widget.specificationModel.protection ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Platform',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'OS',
+                    value: widget.specificationModel.os ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Chipset',
+                    value: widget.specificationModel.chipset ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'CPU',
+                    value: widget.specificationModel.cpu ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'GPU',
+                    value: widget.specificationModel.gpu ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Memory',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Card Slot',
+                    value: widget.specificationModel.cardSlot ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Internal',
+                    value: widget.specificationModel.internal ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Main Camera',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Triple',
+                    value: widget.specificationModel.triple ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Features',
+                    value: widget.specificationModel.features ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Video',
+                    value: widget.specificationModel.video ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sound',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Loudspeaker',
+                    value: widget.specificationModel.loudSpeakerSound ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Comms',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Wlan',
+                    value: widget.specificationModel.wlan ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Bluetooth',
+                    value: widget.specificationModel.bluetooth ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'GPS',
+                    value: widget.specificationModel.gps ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'NFT',
+                    value: widget.specificationModel.nfc ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Radio',
+                    value: widget.specificationModel.radio ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'USB',
+                    value: widget.specificationModel.usb ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Features',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Sensors',
+                    value: widget.specificationModel.sensors ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Battery',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Type',
+                    value: widget.specificationModel.typeBattery ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Charging',
+                    value: widget.specificationModel.charging ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Misc',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Colors',
+                    value: widget.specificationModel.colors ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Models',
+                    value: widget.specificationModel.models ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SAR',
+                    value: widget.specificationModel.sar ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SAR EU',
+                    value: widget.specificationModel.sarEU ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Tests',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Loudspeaker',
+                    value: widget.specificationModel.loudSpeakerTest ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Battery Life',
+                    value: widget.specificationModel.batteryLife ?? '-',
                   ),
                 ],
               ),
@@ -218,10 +469,10 @@ class ItemDetailAndroid extends StatelessWidget {
           Container(
               width: size.width * 0.3,
               child: Text(
-                title ?? '',
+                title ?? '-',
                 style: TextStyle(color: Colors.grey),
               )),
-          Expanded(child: Text(value ?? '')),
+          Expanded(child: Text(value ?? '-')),
         ],
       ),
     );

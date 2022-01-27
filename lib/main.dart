@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
+import 'package:phone_spec/blocs/specification_bloc/specification_bloc.dart';
 import 'package:phone_spec/screens/android/android_dashboard.dart';
 import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
 
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // transparent status bar
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
   ));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "assets/env/.env_production");
 
   runApp(const MyApp());
 }
@@ -16,25 +23,35 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PhoneSpec',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-            elevation: 0.5,
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black),
-            titleTextStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
-        textTheme: GoogleFonts.openSansTextTheme(
-          Theme.of(context)
-              .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => BrandBloc(),
         ),
+        BlocProvider(
+          create: (context) => SpecificationBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'PhoneSpec',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          appBarTheme: AppBarTheme(
+              elevation: 0.5,
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.black),
+              titleTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16)),
+          textTheme: GoogleFonts.openSansTextTheme(
+            Theme.of(context)
+                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          ),
+        ),
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
