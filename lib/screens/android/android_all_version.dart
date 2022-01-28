@@ -115,11 +115,6 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
-                                // suffixIcon: Icon(
-                                //   Icons.search,
-                                //   size: 30,
-                                //   color: Colors.grey,
-                                // )
                               ),
                             ),
                           ),
@@ -167,8 +162,6 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                               color: Colors.white,
                                               child: CustomCacheImage.build(
                                                 context,
-                                                // borderRadius:
-                                                //     BorderRadius.circular(10),
                                                 imgUrl: state
                                                         .listSpecifications[
                                                             index]
@@ -179,10 +172,7 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                                             index]
                                                         .images![0]
                                                     : 'https://www.yahoomobile.com.pk/wp-content/uploads/2020/01/Infinix-Smart-3-price-in-Pakistan.jpg',
-                                              )
-                                              // child: Image.network(
-                                              //     'https://www.yahoomobile.com.pk/wp-content/uploads/2020/01/Infinix-Smart-3-price-in-Pakistan.jpg'),
-                                              ),
+                                              )),
                                           SizedBox(
                                             width: 10,
                                           ),

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
+import 'package:phone_spec/blocs/iphone_bloc/iphone_bloc.dart';
 import 'package:phone_spec/blocs/specification_bloc/specification_bloc.dart';
 import 'package:phone_spec/screens/android/android_dashboard.dart';
 import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SpecificationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => IphoneBloc(),
         ),
       ],
       child: MaterialApp(

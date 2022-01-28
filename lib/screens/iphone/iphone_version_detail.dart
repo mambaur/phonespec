@@ -1,9 +1,14 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_spec/models/specifications_model.dart';
+import 'package:phone_spec/screens/android/android_version_detail.dart';
+import 'package:phone_spec/utils/currency_format.dart';
 
 class IphoneVersionDetail extends StatefulWidget {
-  const IphoneVersionDetail({Key? key}) : super(key: key);
+  final SpecificationModel specificationModel;
+  const IphoneVersionDetail({Key? key, required this.specificationModel})
+      : super(key: key);
 
   @override
   _IphoneVersionDetailState createState() => _IphoneVersionDetailState();
@@ -22,129 +27,424 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Iphone 11'),
-          centerTitle: true,
-        ),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: size.height * 0.5,
-                // decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                //   BoxShadow(
-                //       color: Colors.grey, offset: Offset(0, 1), blurRadius: 1)
-                // ]),
-                child: Stack(
-                  children: [
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        height: size.height * 0.5,
-                        viewportFraction: 1,
-                        enlargeCenterPage: false,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _currentCarrousel = index;
-                          });
-                        },
-                      ),
-                      items: imgList
-                          .map((item) => Container(
-                                child: Container(
-                                  child: Image.network(item,
-                                      fit: BoxFit.scaleDown, width: 1000.0),
-                                ),
-                              ))
-                          .toList(),
+      appBar: AppBar(
+        title: Text(widget.specificationModel.title ?? ''),
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: size.height * 0.5,
+              // decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              //   BoxShadow(
+              //       color: Colors.grey, offset: Offset(0, 1), blurRadius: 1)
+              // ]),
+              child: Stack(
+                children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      height: size.height * 0.5,
+                      viewportFraction: 1,
+                      enlargeCenterPage: false,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentCarrousel = index;
+                        });
+                      },
                     ),
-                    Positioned(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: imgList.asMap().entries.map((entry) {
-                            return GestureDetector(
-                              onTap: () => _controller.animateToPage(entry.key),
+                    items: widget.specificationModel.images!
+                        .map((item) => Container(
                               child: Container(
-                                width: 12.0,
-                                height: 12.0,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 4.0),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.black)
-                                        .withOpacity(
-                                            _currentCarrousel == entry.key
-                                                ? 0.9
-                                                : 0.4)),
+                                child: Image.network(item,
+                                    fit: BoxFit.scaleDown, width: 1000.0),
                               ),
-                            );
-                          }).toList(),
-                        ),
+                            ))
+                        .toList(),
+                  ),
+                  Positioned(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: imgList.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () => _controller.animateToPage(entry.key),
+                            child: Container(
+                              width: 12.0,
+                              height: 12.0,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black)
+                                      .withOpacity(
+                                          _currentCarrousel == entry.key
+                                              ? 0.9
+                                              : 0.4)),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                margin:
-                    EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Price',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ItemDetailIphone(
-                      size: size,
-                      title: 'Range (Rp)',
-                      value: '1.000.000 - 10.000.000',
-                    ),
-                    ItemDetailIphone(
-                      size: size,
-                      title: 'Status',
-                      value: 'Available',
-                    ),
-                  ],
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Launch',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Price (Rp)',
+                    value: '± ' +
+                        (widget.specificationModel.price != null
+                            ? currencyId.format(
+                                int.parse(widget.specificationModel.price!))
+                            : '-'),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Status',
+                    value: widget.specificationModel.status ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Announced',
+                    value: widget.specificationModel.announced ?? '-',
+                  ),
+                ],
               ),
-              Container(
-                margin:
-                    EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Network',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ItemDetailIphone(
-                      size: size,
-                      title: 'Technology',
-                      value: 'GSM/CDMA',
-                    ),
-                    ItemDetailIphone(
-                      size: size,
-                      title: '4G',
-                      value: 'LTE',
-                    ),
-                    ItemDetailIphone(
-                      size: size,
-                      title: 'Speed',
-                      value: 'HSPA 34.4545 LTE A Cat 19 1600',
-                    ),
-                  ],
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Network',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Technology',
+                    value: widget.specificationModel.technology ?? '-',
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Body',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Dimensions',
+                    value: widget.specificationModel.dimensions ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Weight',
+                    value: widget.specificationModel.weight ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Build',
+                    value: widget.specificationModel.build ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SIM',
+                    value: widget.specificationModel.sim ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Display',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Type',
+                    value: widget.specificationModel.typeDisplay ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Size',
+                    value: widget.specificationModel.size ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Resolution',
+                    value: widget.specificationModel.resolution ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Protection',
+                    value: widget.specificationModel.protection ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Platform',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'OS',
+                    value: widget.specificationModel.os ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Chipset',
+                    value: widget.specificationModel.chipset ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'CPU',
+                    value: widget.specificationModel.cpu ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'GPU',
+                    value: widget.specificationModel.gpu ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Memory',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Card Slot',
+                    value: widget.specificationModel.cardSlot ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Internal',
+                    value: widget.specificationModel.internal ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Main Camera',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Triple',
+                    value: widget.specificationModel.triple ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Features',
+                    value: widget.specificationModel.features ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Video',
+                    value: widget.specificationModel.video ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sound',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Loudspeaker',
+                    value: widget.specificationModel.loudSpeakerSound ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Comms',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Wlan',
+                    value: widget.specificationModel.wlan ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Bluetooth',
+                    value: widget.specificationModel.bluetooth ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'GPS',
+                    value: widget.specificationModel.gps ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'NFT',
+                    value: widget.specificationModel.nfc ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Radio',
+                    value: widget.specificationModel.radio ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'USB',
+                    value: widget.specificationModel.usb ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Features',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Sensors',
+                    value: widget.specificationModel.sensors ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Battery',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Type',
+                    value: widget.specificationModel.typeBattery ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Charging',
+                    value: widget.specificationModel.charging ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Misc',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Colors',
+                    value: widget.specificationModel.colors ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Models',
+                    value: widget.specificationModel.models ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SAR',
+                    value: widget.specificationModel.sar ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'SAR EU',
+                    value: widget.specificationModel.sarEU ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Tests',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Loudspeaker',
+                    value: widget.specificationModel.loudSpeakerTest ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Battery Life',
+                    value: widget.specificationModel.batteryLife ?? '-',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
