@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
 import 'package:phone_spec/models/specifications_model.dart';
 import 'package:phone_spec/screens/android/android_version_detail.dart';
 import 'package:phone_spec/utils/currency_format.dart';
@@ -18,10 +19,6 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
   final CarouselController _controller = CarouselController();
   // Index untuk indicator carousel
   int _currentCarrousel = 0;
-
-  final List<String> imgList = [
-    'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s21-fe-5g.jpg',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +66,10 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
                       alignment: Alignment.bottomCenter,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: imgList.asMap().entries.map((entry) {
+                        children: widget.specificationModel.images!
+                            .asMap()
+                            .entries
+                            .map((entry) {
                           return GestureDetector(
                             onTap: () => _controller.animateToPage(entry.key),
                             child: Container(

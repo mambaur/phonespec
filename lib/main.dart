@@ -1,18 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
 import 'package:phone_spec/blocs/iphone_bloc/iphone_bloc.dart';
 import 'package:phone_spec/blocs/specification_bloc/specification_bloc.dart';
 import 'package:phone_spec/screens/android/android_dashboard.dart';
 import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
+import 'package:phone_spec/screens/others/about.dart';
+import 'package:phone_spec/screens/others/disclaimer.dart';
+
+String get bannerAdUnitId {
+  /// Always test with test ads
+  if (kDebugMode) {
+    return MobileAds.bannerAdTestUnitId;
+  } else {
+    return 'ca-app-pub-2465007971338713/2549938883';
+  }
+}
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  // await MobileAds.instance.initialize();
+  await MobileAds.initialize(
+    bannerAdUnitId: bannerAdUnitId,
+  );
 
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/env/.env_production");
@@ -68,7 +88,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
+  String version = '';
   static List<Widget> _widgetOptions = <Widget>[
     AndroidDashboard(),
     IphoneDashboard()
@@ -80,12 +102,72 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future getPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getPackageInfo();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('PhoneSpec'),
-        leading: Icon(Icons.phone_android),
+        // leading: Icon(Icons.phone_android),
+        leading: IconButton(
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            icon: const Icon(Icons.menu)),
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(padding: EdgeInsets.zero, children: [
+            DrawerHeader(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Text(
+                      "Phonespec",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Text(
+                      "Temukan spesifikasi HP impianmu",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+              decoration: const BoxDecoration(color: Colors.purple),
+            ),
+            ListTile(
+                onTap: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const Disclaimer();
+                  }));
+                },
+                title: const Text("Disclaimer")),
+            ListTile(
+                onTap: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const About();
+                  }));
+                },
+                title: const Text("Tentang Aplikasi")),
+            ListTile(onTap: () {}, title: Text('Version ' + version)),
+          ]),
+        ),
       ),
       backgroundColor: Colors.white,
       body: Center(

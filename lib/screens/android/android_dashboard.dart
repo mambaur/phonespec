@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
 import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
 import 'package:phone_spec/screens/android/android_all_version.dart';
 import 'package:phone_spec/screens/widgets/custom_cache_image.dart';
@@ -121,6 +122,18 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                 ])),
                 SliverList(
                     delegate: SliverChildListDelegate([
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 15, left: 15, right: 15),
+                    child: Center(
+                      child: BannerAd(
+                        size: BannerSize.BANNER,
+                      ),
+                    ),
+                  ),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
                   BlocBuilder<BrandBloc, BrandState>(
                     builder: (context, state) {
                       if (state is BrandData) {
@@ -137,10 +150,10 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                             children: List.generate(
                                 state.hasReachMax
                                     ? state.listBrands.length
-                                    : state.listBrands.length % 2 == 0
-                                        ? state.listBrands.length + 2
-                                        : state.listBrands.length % 3 == 0
-                                            ? state.listBrands.length + 3
+                                    : state.listBrands.length % 3 == 0
+                                        ? state.listBrands.length + 3
+                                        : state.listBrands.length % 2 == 0
+                                            ? state.listBrands.length + 2
                                             : state.listBrands.length + 1,
                                 (index) {
                               if (index < state.listBrands.length) {
@@ -184,14 +197,24 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                                   ),
                                 );
                               } else {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: CircularProgressIndicator(
-                                        color: Colors.orange.shade600,
-                                        strokeWidth: 2),
-                                  ),
+                                // return Center(
+                                //   child: SizedBox(
+                                //     width: 30,
+                                //     height: 30,
+                                //     child: CircularProgressIndicator(
+                                //         color: Colors.orange.shade600,
+                                //         strokeWidth: 2),
+                                //   ),
+                                // );
+                                return Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Colors.purple.withOpacity(0.2)),
+                                      borderRadius: BorderRadius.circular(10)),
                                 );
                               }
                             }),

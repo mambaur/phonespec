@@ -1,4 +1,4 @@
-package com.example.phone_spec
+package com.caraguna.phonespec
 
 import io.flutter.embedding.android.FlutterActivity
 

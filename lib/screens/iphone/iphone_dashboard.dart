@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:native_admob_flutter/native_admob_flutter.dart';
 import 'package:phone_spec/blocs/iphone_bloc/iphone_bloc.dart';
 import 'package:phone_spec/screens/iphone/iphone_version_detail.dart';
 import 'package:phone_spec/screens/widgets/custom_cache_image.dart';
@@ -28,21 +29,21 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
 
     if (currentScroll == maxScroll && !_hasReachMax) {
       print('iam scrolling');
-      _iphoneBloc.add(GetIphone(18, false, 14, _searchController.text));
+      _iphoneBloc.add(GetIphone(10, false, 14, _searchController.text));
     }
   }
 
   Future<void> _refresh() async {
     await Future.delayed(Duration(seconds: 1));
     _searchController.text = '';
-    _iphoneBloc.add(GetIphone(18, true, 14, ''));
+    _iphoneBloc.add(GetIphone(10, true, 14, ''));
     print('Refresing...');
   }
 
   @override
   void initState() {
     _iphoneBloc = BlocProvider.of<IphoneBloc>(context);
-    _iphoneBloc.add(GetIphone(18, true, 14, ''));
+    _iphoneBloc.add(GetIphone(10, true, 14, ''));
 
     _scrollController.addListener(onScroll);
     super.initState();
@@ -118,6 +119,18 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                   ])),
                   SliverList(
                       delegate: SliverChildListDelegate([
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 15, right: 15),
+                      child: Center(
+                        child: BannerAd(
+                          size: BannerSize.BANNER,
+                        ),
+                      ),
+                    ),
+                  ])),
+                  SliverList(
+                      delegate: SliverChildListDelegate([
                     BlocBuilder<IphoneBloc, IphoneState>(
                       builder: (context, state) {
                         if (state is IphoneData) {
@@ -180,13 +193,17 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                                       ),
                                     );
                                   } else {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: CircularProgressIndicator(
-                                            color: Colors.orange.shade600,
-                                            strokeWidth: 2),
+                                    return Container(
+                                      padding: const EdgeInsets.only(
+                                          top: 15, left: 15, right: 15),
+                                      child: Center(
+                                        child: SizedBox(
+                                          width: 25,
+                                          height: 25,
+                                          child: CircularProgressIndicator(
+                                              color: Colors.purple,
+                                              strokeWidth: 2),
+                                        ),
                                       ),
                                     );
                                   }

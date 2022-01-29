@@ -22,7 +22,7 @@ class IphoneBloc extends Bloc<IphoneEvent, IphoneState> {
         page = 1;
         emit(GetIphoneLoading());
         List<SpecificationModel>? data = await _specificationRepo
-            .getSpecifications(14, event.q, page, event.limit);
+            .getSpecifications(event.brandId, event.q, page, event.limit);
         if (data != null) {
           listIphones = data;
           data.length < event.limit
@@ -35,7 +35,7 @@ class IphoneBloc extends Bloc<IphoneEvent, IphoneState> {
         print('Get more iphone phone detail ...');
         page++;
         List<SpecificationModel>? data = await _specificationRepo
-            .getSpecifications(14, event.q, page, event.limit);
+            .getSpecifications(event.brandId, event.q, page, event.limit);
         if (data != null) {
           listIphones.addAll(data);
           data.length < event.limit

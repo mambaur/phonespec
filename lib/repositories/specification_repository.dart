@@ -12,7 +12,7 @@ class SpecificationRepository {
     try {
       final response = await http.get(Uri.parse(
           _baseUrl + '/androids/$bannerId?q=$q&page=$page&limit=$limit'));
-      print(response.body);
+      // print(response.body);
 
       if (response.statusCode == 200) {
         Iterable iterable = json.decode(response.body)['data'];

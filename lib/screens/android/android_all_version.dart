@@ -32,7 +32,7 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
     if (currentScroll == maxScroll && !_hasReachMax) {
       print('iam scrolling');
       _specificationBloc.add(GetSpecification(
-          18, false, widget.brandModel.id!, _searchController.text));
+          10, false, widget.brandModel.id!, _searchController.text));
     }
   }
 
@@ -40,7 +40,7 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
     await Future.delayed(Duration(seconds: 1));
     _searchController.text = '';
     _specificationBloc
-        .add(GetSpecification(18, true, widget.brandModel.id!, ''));
+        .add(GetSpecification(10, true, widget.brandModel.id!, ''));
     print('Refresing...');
   }
 
@@ -48,7 +48,7 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
   void initState() {
     _specificationBloc = BlocProvider.of<SpecificationBloc>(context);
     _specificationBloc
-        .add(GetSpecification(18, true, widget.brandModel.id!, ''));
+        .add(GetSpecification(10, true, widget.brandModel.id!, ''));
 
     _scrollController.addListener(onScroll);
     super.initState();
@@ -213,13 +213,16 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                       // ),
                                     );
                                   } else {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: CircularProgressIndicator(
-                                            color: Colors.orange.shade600,
-                                            strokeWidth: 2),
+                                    return Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: Center(
+                                        child: SizedBox(
+                                          width: 25,
+                                          height: 25,
+                                          child: CircularProgressIndicator(
+                                              color: Colors.purple,
+                                              strokeWidth: 2),
+                                        ),
                                       ),
                                     );
                                   }
