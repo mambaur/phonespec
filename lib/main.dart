@@ -119,7 +119,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: const Text('PhoneSpec'),
+        // title: const Text('PhoneSpec'),
+        title: SizedBox(
+            width: 100,
+            child: Image.asset('assets/images/phonespec_logo_4.png')),
         // leading: Icon(Icons.phone_android),
         leading: IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),

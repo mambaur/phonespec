@@ -1,5 +1,5 @@
 name: phone_spec
-description: A new Flutter project.
+description: Phone Specifications.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -60,7 +60,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/images/no-record.png
+  image: assets/images/phonespec_logo_4.png
   android: true
   ios: true
   web: true
@@ -81,6 +81,12 @@ flutter:
     - assets/env/.env_example
     - assets/env/.env_production
     - assets/images/no-record.png
+    - assets/images/phonespec_logo_1.png
+    - assets/images/phonespec_logo_2.png
+    - assets/images/phonespec_logo_3.png
+    - assets/images/phonespec_logo_4.png
+    - assets/images/phonespec_logo_5.png
+    - assets/images/phonespec_splash.png
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
