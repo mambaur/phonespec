@@ -271,8 +271,16 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'Triple',
-                    value: widget.specificationModel.triple ?? '-',
+                    title: widget.specificationModel.triple != null
+                        ? 'Triple'
+                        : widget.specificationModel.quad != null
+                            ? 'Quad'
+                            : 'Triple',
+                    value: widget.specificationModel.triple != null
+                        ? widget.specificationModel.triple!
+                        : widget.specificationModel.quad != null
+                            ? widget.specificationModel.quad!
+                            : '-',
                   ),
                   ItemDetailAndroid(
                     size: size,
@@ -293,6 +301,41 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    'Selfie Camera',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: widget.specificationModel.scSingle != null
+                        ? 'Single'
+                        : widget.specificationModel.scDual != null
+                            ? 'Dual'
+                            : 'Single',
+                    value: widget.specificationModel.scSingle != null
+                        ? widget.specificationModel.scSingle!
+                        : widget.specificationModel.scDual != null
+                            ? widget.specificationModel.scDual!
+                            : '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Features',
+                    value: widget.specificationModel.scFeatures ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Video',
+                    value: widget.specificationModel.scVideo ?? '-',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'Sound',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -300,6 +343,11 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                     size: size,
                     title: 'Loudspeaker',
                     value: widget.specificationModel.loudSpeakerSound ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: '3.5mm jack',
+                    value: widget.specificationModel.jack ?? '-',
                   ),
                 ],
               ),
@@ -425,6 +473,16 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                   Text(
                     'Tests',
                     style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Performance',
+                    value: widget.specificationModel.performanceTest ?? '-',
+                  ),
+                  ItemDetailAndroid(
+                    size: size,
+                    title: 'Display',
+                    value: widget.specificationModel.displayTest ?? '-',
                   ),
                   ItemDetailAndroid(
                     size: size,

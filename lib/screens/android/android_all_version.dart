@@ -185,22 +185,45 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                                       .listSpecifications[index]
                                                       .title ??
                                                   ''),
-                                              Text(
-                                                '± ' +
-                                                    (state
-                                                                .listSpecifications[
-                                                                    index]
-                                                                .price !=
-                                                            null
-                                                        ? currencyId.format(
-                                                            int.parse(state
-                                                                .listSpecifications[
-                                                                    index]
-                                                                .price!))
-                                                        : ''),
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.green,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                          child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text(
+                                                          '±',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ))),
+                                                  Text(
+                                                    ' ' +
+                                                        (state
+                                                                    .listSpecifications[
+                                                                        index]
+                                                                    .price !=
+                                                                null
+                                                            ? currencyId.format(
+                                                                int.parse(state
+                                                                    .listSpecifications[
+                                                                        index]
+                                                                    .price!))
+                                                            : ''),
+                                                    style: TextStyle(
+                                                        color: Colors.grey,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           )),

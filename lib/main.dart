@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,8 @@ import 'package:phone_spec/screens/android/android_dashboard.dart';
 import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
 import 'package:phone_spec/screens/others/about.dart';
 import 'package:phone_spec/screens/others/disclaimer.dart';
+import 'package:phone_spec/utils/http_overrides.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String get bannerAdUnitId {
   /// Always test with test ads
@@ -34,7 +38,8 @@ void main() async {
     bannerAdUnitId: bannerAdUnitId,
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
+  // Inisial http method untuk Android versi 6 atau kebawah
+  HttpOverrides.global = MyHttpOverrides();
   await dotenv.load(fileName: "assets/env/.env_production");
 
   runApp(const MyApp());
@@ -91,6 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   String version = '';
+  String _rateReviewUrl =
+      'https://play.google.com/store/apps/details?id=com.caraguna.phonespec';
   static List<Widget> _widgetOptions = <Widget>[
     AndroidDashboard(),
     IphoneDashboard()
@@ -106,6 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo.version;
     setState(() {});
+  }
+
+  void _launchURL(_url) async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 
   @override
@@ -168,6 +179,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   }));
                 },
                 title: const Text("Tentang Aplikasi")),
+            ListTile(
+                onTap: () {
+                  _launchURL(_rateReviewUrl);
+                },
+                title: const Text("Rate and Review")),
             ListTile(onTap: () {}, title: Text('Version ' + version)),
           ]),
         ),

@@ -122,13 +122,11 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                 ])),
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  Padding(
+                  Container(
                     padding:
                         const EdgeInsets.only(top: 15, left: 15, right: 15),
                     child: Center(
-                      child: BannerAd(
-                        size: BannerSize.BANNER,
-                      ),
+                      child: BannerAd(size: BannerSize.BANNER),
                     ),
                   ),
                 ])),

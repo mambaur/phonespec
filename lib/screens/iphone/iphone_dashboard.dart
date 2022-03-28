@@ -172,13 +172,33 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                                         title: Text(
                                             state.listIphones[index].title ??
                                                 ''),
-                                        subtitle: Text('± ' +
-                                            (state.listIphones[index].price !=
-                                                    null
-                                                ? currencyId.format(int.parse(
-                                                    state.listIphones[index]
-                                                        .price!))
-                                                : '')),
+                                        subtitle: Row(
+                                          children: [
+                                            Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                  '±',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ))),
+                                            Text(' ' +
+                                                (state.listIphones[index]
+                                                            .price !=
+                                                        null
+                                                    ? currencyId.format(
+                                                        int.parse(state
+                                                            .listIphones[index]
+                                                            .price!))
+                                                    : '')),
+                                          ],
+                                        ),
                                         leading: SizedBox(
                                           width: 50,
                                           child: CustomCacheImage.build(

@@ -40,6 +40,13 @@ class SpecificationModel {
       price,
       camera,
       loudSpeakerTest,
+      quad,
+      scVideo,
+      scFeatures,
+      scSingle,
+      scDual,
+      displayTest,
+      performanceTest,
       batteryLife;
   List<String>? images;
 
@@ -87,6 +94,13 @@ class SpecificationModel {
       this.camera,
       this.loudSpeakerTest,
       this.batteryLife,
+      this.quad,
+      this.scDual,
+      this.scFeatures,
+      this.scSingle,
+      this.scVideo,
+      this.displayTest,
+      this.performanceTest,
       this.images});
 
   factory SpecificationModel.fromJson(Map<String, dynamic> json) {
@@ -134,6 +148,13 @@ class SpecificationModel {
       camera: json['camera'],
       loudSpeakerTest: json['loud_speaker_test'],
       batteryLife: json['battery_life'],
+      quad: json['quad'],
+      scDual: json['sc_dual'],
+      scFeatures: json['sc_features'],
+      scSingle: json['sc_single'],
+      scVideo: json['sc_video'],
+      displayTest: json['display_test'],
+      performanceTest: json['performance_test'],
       images: json["images"] != null ? List<String>.from(json["images"]) : null,
     );
   }
