@@ -195,15 +195,11 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                                                       child: Center(
                                                           child: Container(
                                                         padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Text(
-                                                          '±',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                            EdgeInsets.all(2),
+                                                        child: Icon(
+                                                          Icons.shopping_bag,
+                                                          color: Colors.white,
+                                                          size: 13,
                                                         ),
                                                       ))),
                                                   Text(

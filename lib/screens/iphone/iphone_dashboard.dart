@@ -175,18 +175,16 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                                         subtitle: Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.all(5),
+                                                padding: EdgeInsets.all(2),
                                                 decoration: BoxDecoration(
                                                   color: Colors.green,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Center(
-                                                    child: Text(
-                                                  '±',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    child: Icon(
+                                                  Icons.shopping_bag,
+                                                  color: Colors.white,
+                                                  size: 13,
                                                 ))),
                                             Text(' ' +
                                                 (state.listIphones[index]

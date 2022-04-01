@@ -277,12 +277,16 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
                         ? 'Triple'
                         : widget.specificationModel.quad != null
                             ? 'Quad'
-                            : 'Triple',
+                            : widget.specificationModel.single != null
+                                ? 'Single'
+                                : 'Triple',
                     value: widget.specificationModel.triple != null
                         ? widget.specificationModel.triple!
                         : widget.specificationModel.quad != null
                             ? widget.specificationModel.quad!
-                            : '-',
+                            : widget.specificationModel.single != null
+                                ? widget.specificationModel.single!
+                                : '-',
                   ),
                   ItemDetailAndroid(
                     size: size,
