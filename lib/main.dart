@@ -16,6 +16,7 @@ import 'package:phone_spec/screens/iphone/iphone_dashboard.dart';
 import 'package:phone_spec/screens/others/about.dart';
 import 'package:phone_spec/screens/others/disclaimer.dart';
 import 'package:phone_spec/utils/http_overrides.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 String get bannerAdUnitId {
@@ -79,7 +80,11 @@ class MyApp extends StatelessWidget {
                 .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           ),
         ),
-        home: const MyHomePage(),
+        home: UpgradeAlert(
+            showIgnore: false,
+            showReleaseNotes: false,
+            showLater: false,
+            child: const MyHomePage()),
       ),
     );
   }
@@ -98,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String version = '';
   String _rateReviewUrl =
       'https://play.google.com/store/apps/details?id=com.caraguna.phonespec';
+  String _saweriaUrl = 'https://saweria.co/bauroziq';
   static List<Widget> _widgetOptions = <Widget>[
     AndroidDashboard(),
     IphoneDashboard()
@@ -183,8 +189,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   _launchURL(_rateReviewUrl);
                 },
-                title: const Text("Rate and Review")),
-            ListTile(onTap: () {}, title: Text('Version ' + version)),
+                title: const Text("Beri Penilaian Aplikasi")),
+            ListTile(
+                onTap: () {
+                  _launchURL(_saweriaUrl);
+                },
+                title: const Text("Dukung Pengembangan App")),
+            ListTile(onTap: () {}, title: Text('Versi ' + version)),
           ]),
         ),
       ),

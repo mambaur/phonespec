@@ -384,7 +384,7 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
                   ),
                   ItemDetailAndroid(
                     size: size,
-                    title: 'NFT',
+                    title: 'NFC',
                     value: widget.specificationModel.nfc ?? '-',
                   ),
                   ItemDetailAndroid(
