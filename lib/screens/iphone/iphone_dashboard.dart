@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:native_admob_flutter/native_admob_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:phone_spec/blocs/iphone_bloc/iphone_bloc.dart';
 import 'package:phone_spec/screens/iphone/iphone_version_detail.dart';
 import 'package:phone_spec/screens/widgets/custom_cache_image.dart';
 import 'package:phone_spec/utils/currency_format.dart';
+
+enum StatusAd { initial, loaded }
 
 class IphoneDashboard extends StatefulWidget {
   const IphoneDashboard({Key? key}) : super(key: key);
@@ -15,20 +18,38 @@ class IphoneDashboard extends StatefulWidget {
 
 class _IphoneDashboardState extends State<IphoneDashboard> {
   late IphoneBloc _iphoneBloc;
-  ScrollController _scrollController = ScrollController();
-  TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   /// Set default hasReachMax value false
   /// Variabel ini digunakan untuk menangani agaer scrollController tidak-
   /// Berlangsung terus menerus.
   bool _hasReachMax = false;
 
+  BannerAd? myBanner;
+
+  StatusAd statusAd = StatusAd.initial;
+
+  BannerAdListener listener() => BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (Ad ad) {
+          if (kDebugMode) {
+            print('Ad Loaded.');
+          }
+          setState(() {
+            statusAd = StatusAd.loaded;
+          });
+        },
+      );
+
   void onScroll() {
     double maxScroll = _scrollController.position.maxScrollExtent;
     double currentScroll = _scrollController.position.pixels;
 
     if (currentScroll == maxScroll && !_hasReachMax) {
-      print('iam scrolling');
+      if (kDebugMode) {
+        print('iam scrolling');
+      }
       _iphoneBloc.add(GetIphone(10, false, 14, _searchController.text));
     }
   }
@@ -37,7 +58,9 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
     await Future.delayed(Duration(seconds: 1));
     _searchController.text = '';
     _iphoneBloc.add(GetIphone(10, true, 14, ''));
-    print('Refresing...');
+    if (kDebugMode) {
+      print('Refresing...');
+    }
   }
 
   @override
@@ -46,7 +69,24 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
     _iphoneBloc.add(GetIphone(10, true, 14, ''));
 
     _scrollController.addListener(onScroll);
+
+    myBanner = BannerAd(
+      // test banner
+      // adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      //
+      adUnitId: 'ca-app-pub-2465007971338713/2549938883',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: listener(),
+    );
+    myBanner!.load();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    myBanner!.dispose();
+    super.dispose();
   }
 
   @override
@@ -67,19 +107,20 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
             onRefresh: () => _refresh(),
             child: CustomScrollView(
                 controller: _scrollController,
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverList(
-                      delegate: SliverChildListDelegate([
-                    Container(
-                      margin: EdgeInsets.only(top: 10, left: 15, right: 15),
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    floating: true,
+                    title: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
                       height: 40,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                                 color: Colors.grey.withOpacity(0.5),
-                                offset: Offset(0, 1),
+                                offset: const Offset(0, 1),
                                 blurRadius: 1)
                           ],
                           borderRadius: BorderRadius.circular(10)),
@@ -94,7 +135,7 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                               },
                               textAlignVertical: TextAlignVertical.bottom,
                               maxLines: 1,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.only(
                                     top: 6, bottom: 7, left: 10),
@@ -112,21 +153,24 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                                 _iphoneBloc.add(GetIphone(
                                     18, true, 14, _searchController.text));
                               },
-                              icon: Icon(Icons.search))
+                              icon: const Icon(Icons.search))
                         ],
                       ),
                     ),
-                  ])),
+                  ),
                   SliverList(
                       delegate: SliverChildListDelegate([
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 15, left: 15, right: 15),
-                      child: Center(
-                        child: BannerAd(
-                          size: BannerSize.BANNER,
-                        ),
-                      ),
+                    Center(
+                      child: statusAd == StatusAd.loaded
+                          ? Container(
+                              margin:
+                                  EdgeInsets.only(top: 5, left: 15, right: 15),
+                              alignment: Alignment.center,
+                              child: AdWidget(ad: myBanner!),
+                              width: myBanner!.size.width.toDouble(),
+                              height: myBanner!.size.height.toDouble(),
+                            )
+                          : Container(),
                     ),
                   ])),
                   SliverList(

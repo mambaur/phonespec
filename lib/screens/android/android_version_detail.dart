@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:native_admob_flutter/native_admob_flutter.dart';
 import 'package:phone_spec/models/specifications_model.dart';
 import 'package:phone_spec/utils/currency_format.dart';
 
@@ -275,16 +274,18 @@ class _AndroidVersionDetailState extends State<AndroidVersionDetail> {
                         ? 'Triple'
                         : widget.specificationModel.quad != null
                             ? 'Quad'
-                            : widget.specificationModel.single != null
-                                ? 'Single'
-                                : 'Triple',
+                            : widget.specificationModel.dual != null
+                                ? 'Dual'
+                                : 'Single',
                     value: widget.specificationModel.triple != null
                         ? widget.specificationModel.triple!
                         : widget.specificationModel.quad != null
                             ? widget.specificationModel.quad!
                             : widget.specificationModel.single != null
                                 ? widget.specificationModel.single!
-                                : '-',
+                                : widget.specificationModel.dual != null
+                                    ? widget.specificationModel.dual!
+                                    : '-',
                   ),
                   ItemDetailAndroid(
                     size: size,

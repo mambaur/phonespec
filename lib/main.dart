@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:native_admob_flutter/native_admob_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
 import 'package:phone_spec/blocs/iphone_bloc/iphone_bloc.dart';
@@ -19,25 +18,13 @@ import 'package:phone_spec/utils/http_overrides.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-String get bannerAdUnitId {
-  /// Always test with test ads
-  if (kDebugMode) {
-    return MobileAds.bannerAdTestUnitId;
-  } else {
-    return 'ca-app-pub-2465007971338713/2549938883';
-  }
-}
-
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
 
   WidgetsFlutterBinding.ensureInitialized();
-  // await MobileAds.instance.initialize();
-  await MobileAds.initialize(
-    bannerAdUnitId: bannerAdUnitId,
-  );
+  await MobileAds.instance.initialize();
 
   // Inisial http method untuk Android versi 6 atau kebawah
   HttpOverrides.global = MyHttpOverrides();
@@ -67,7 +54,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
               elevation: 0.5,
               backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black),
@@ -101,12 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   String version = '';
-  String _rateReviewUrl =
+  final String _rateReviewUrl =
       'https://play.google.com/store/apps/details?id=com.caraguna.phonespec';
-  String _saweriaUrl = 'https://saweria.co/bauroziq';
-  static List<Widget> _widgetOptions = <Widget>[
-    AndroidDashboard(),
-    IphoneDashboard()
+  // final String _saweriaUrl = 'https://saweria.co/bauroziq';
+  static final List<Widget> _widgetOptions = <Widget>[
+    const AndroidDashboard(),
+    const IphoneDashboard()
   ];
 
   void _onItemTapped(int index) {
@@ -190,11 +177,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   _launchURL(_rateReviewUrl);
                 },
                 title: const Text("Beri Penilaian Aplikasi")),
-            ListTile(
-                onTap: () {
-                  _launchURL(_saweriaUrl);
-                },
-                title: const Text("Dukung Pengembangan App")),
+            // ListTile(
+            //     onTap: () {
+            //       _launchURL(_saweriaUrl);
+            //     },
+            //     title: const Text("Dukung Pengembangan App")),
             ListTile(onTap: () {}, title: Text('Versi ' + version)),
           ]),
         ),

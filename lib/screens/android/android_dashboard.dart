@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:native_admob_flutter/native_admob_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:phone_spec/blocs/brand_bloc/brand_bloc.dart';
 import 'package:phone_spec/screens/android/android_all_version.dart';
 import 'package:phone_spec/screens/widgets/custom_cache_image.dart';
+
+enum StatusAd { initial, loaded }
 
 class AndroidDashboard extends StatefulWidget {
   const AndroidDashboard({Key? key}) : super(key: key);
@@ -21,6 +24,22 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
   /// Variabel ini digunakan untuk menangani agaer scrollController tidak-
   /// Berlangsung terus menerus.
   bool _hasReachMax = false;
+
+  BannerAd? myBanner;
+
+  StatusAd statusAd = StatusAd.initial;
+
+  BannerAdListener listener() => BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (Ad ad) {
+          if (kDebugMode) {
+            print('Ad Loaded.');
+          }
+          setState(() {
+            statusAd = StatusAd.loaded;
+          });
+        },
+      );
 
   void onScroll() {
     double maxScroll = _scrollController.position.maxScrollExtent;
@@ -45,7 +64,25 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
     _brandBloc.add(GetBrand(18, true, ''));
 
     _scrollController.addListener(onScroll);
+
+    myBanner = BannerAd(
+      // test banner
+      // adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      //
+      adUnitId: 'ca-app-pub-2465007971338713/2900622168',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: listener(),
+    );
+    myBanner!.load();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    myBanner!.dispose();
+    super.dispose();
   }
 
   @override
@@ -122,12 +159,17 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                 ])),
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  Container(
-                    padding:
-                        const EdgeInsets.only(top: 15, left: 15, right: 15),
-                    child: Center(
-                      child: BannerAd(size: BannerSize.BANNER),
-                    ),
+                  Center(
+                    child: statusAd == StatusAd.loaded
+                        ? Container(
+                            margin:
+                                EdgeInsets.only(top: 15, left: 15, right: 15),
+                            alignment: Alignment.center,
+                            child: AdWidget(ad: myBanner!),
+                            width: myBanner!.size.width.toDouble(),
+                            height: myBanner!.size.height.toDouble(),
+                          )
+                        : Container(),
                   ),
                 ])),
                 SliverList(
