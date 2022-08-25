@@ -30,9 +30,8 @@ class _AboutState extends State<About> {
             children: [
               Center(
                   child: SizedBox(
-                      width: 150,
-                      child:
-                          Image.asset('assets/images/phonespec_logo_5.png'))),
+                      width: 170,
+                      child: Image.asset('assets/images/phonespec.png'))),
               SizedBox(
                 height: 15,
               ),

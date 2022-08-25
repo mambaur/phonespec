@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -41,7 +41,7 @@ dependencies:
   package_info_plus: ^1.3.0
   flutter_native_splash: ^1.3.3
   url_launcher: ^6.0.20
-  upgrader: ^3.13.0
+  upgrader: ^4.6.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,7 +62,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/images/phonespec_logo_4.png
+  image: assets/images/title.png
   android: true
   ios: true
   web: true
@@ -89,6 +89,8 @@ flutter:
     - assets/images/phonespec_logo_4.png
     - assets/images/phonespec_logo_5.png
     - assets/images/phonespec_splash.png
+    - assets/images/title.png
+    - assets/images/phonespec.png
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -111,10 +111,10 @@ class _IphoneDashboardState extends State<IphoneDashboard> {
                 slivers: [
                   SliverAppBar(
                     automaticallyImplyLeading: false,
+                    elevation: 0,
                     floating: true,
                     title: Container(
                       margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      height: 40,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: [

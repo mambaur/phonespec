@@ -108,7 +108,6 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                     delegate: SliverChildListDelegate([
                   Container(
                     margin: EdgeInsets.only(top: 10, left: 15, right: 15),
-                    height: 40,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -139,11 +138,6 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
-                              // suffixIcon: Icon(
-                              //   Icons.search,
-                              //   size: 30,
-                              //   color: Colors.grey,
-                              // )
                             ),
                           ),
                         ),
@@ -209,9 +203,14 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Colors.purple.withOpacity(0.2)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            blurRadius: 7,
+                                            offset: Offset(1, 3),
+                                          )
+                                        ],
+                                        color: Colors.white,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -230,6 +229,8 @@ class _AndroidDashboardState extends State<AndroidDashboard> {
                                             child: Text(
                                           state.listBrands[index].name ?? '',
                                           overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         )),
                                       ],
                                     ),

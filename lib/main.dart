@@ -68,9 +68,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: UpgradeAlert(
-            showIgnore: false,
-            showReleaseNotes: false,
-            showLater: false,
+            upgrader: Upgrader(
+              showIgnore: false,
+              showReleaseNotes: false,
+              showLater: false,
+            ),
             child: const MyHomePage()),
       ),
     );
@@ -123,11 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        // title: const Text('PhoneSpec'),
-        title: SizedBox(
-            width: 100,
-            child: Image.asset('assets/images/phonespec_logo_4.png')),
-        // leading: Icon(Icons.phone_android),
+        title:
+            SizedBox(width: 100, child: Image.asset('assets/images/title.png')),
+        elevation: 0,
         leading: IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
             icon: const Icon(Icons.menu)),
@@ -142,19 +142,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Text(
-                      "Phonespec",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
+                  children: [
+                    // Text(
+                    //   "Phonespec",
+                    //   style: TextStyle(color: Colors.white, fontSize: 20),
+                    // ),
+                    SizedBox(
+                        width: 100,
+                        child: Image.asset('assets/images/title.png')),
                     Text(
                       "Temukan spesifikasi HP impianmu",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-              decoration: const BoxDecoration(color: Colors.purple),
+              // decoration: const BoxDecoration(color: Colors.purple),
             ),
             ListTile(
                 onTap: () {
@@ -163,6 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     return const Disclaimer();
                   }));
                 },
+                trailing: Icon(Icons.chevron_right),
                 title: const Text("Disclaimer")),
             ListTile(
                 onTap: () {
@@ -171,17 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     return const About();
                   }));
                 },
+                trailing: Icon(Icons.chevron_right),
                 title: const Text("Tentang Aplikasi")),
             ListTile(
                 onTap: () {
                   _launchURL(_rateReviewUrl);
                 },
+                trailing: Icon(Icons.chevron_right),
                 title: const Text("Beri Penilaian Aplikasi")),
-            // ListTile(
-            //     onTap: () {
-            //       _launchURL(_saweriaUrl);
-            //     },
-            //     title: const Text("Dukung Pengembangan App")),
             ListTile(onTap: () {}, title: Text('Versi ' + version)),
           ]),
         ),
@@ -193,6 +194,8 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedFontSize: 12.0,
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

@@ -67,6 +67,7 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
         appBar: AppBar(
           title: Text(widget.brandModel.name ?? ''),
           centerTitle: true,
+          elevation: 0,
         ),
         backgroundColor: Colors.white,
         body: RefreshIndicator(
@@ -82,7 +83,6 @@ class _AndroidAllVersionState extends State<AndroidAllVersion> {
                       delegate: SliverChildListDelegate([
                     Container(
                       margin: EdgeInsets.only(top: 10, left: 15, right: 15),
-                      height: 40,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: [

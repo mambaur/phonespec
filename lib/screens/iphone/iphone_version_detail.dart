@@ -32,10 +32,6 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
           children: [
             Container(
               height: size.height * 0.5,
-              // decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              //   BoxShadow(
-              //       color: Colors.grey, offset: Offset(0, 1), blurRadius: 1)
-              // ]),
               child: Stack(
                 children: [
                   CarouselSlider(
@@ -52,9 +48,10 @@ class _IphoneVersionDetailState extends State<IphoneVersionDetail> {
                     ),
                     items: widget.specificationModel.images!
                         .map((item) => Container(
+                              padding: EdgeInsets.all(15),
                               child: Container(
                                 child: Image.network(item,
-                                    fit: BoxFit.scaleDown, width: 1000.0),
+                                    fit: BoxFit.contain, width: 1000.0),
                               ),
                             ))
                         .toList(),
